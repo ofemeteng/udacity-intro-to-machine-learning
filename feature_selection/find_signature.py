@@ -38,6 +38,23 @@ labels_train   = labels_train[:150]
 
 
 ### your code goes here
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+clf = DecisionTreeClassifier()
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+accuracy = accuracy_score(labels_test, pred)
+print('Accuracy: {}'.format(accuracy))
+
+feature_importances_array = clf.feature_importances_
+### use Tfidf declared above to find words with importance greater than 0.2
+feature_mapping_array = vectorizer.get_feature_names()
+for index, feature in enumerate(feature_importances_array):
+	if feature > 0.2:
+		print('Importance of most importance features: {}, Number: {}, Feature (Word): {}'.format(feature, index, feature_mapping_array[index]))
 
 
-
+# print('word number 33614 with highest importance: {}'.format(feature_mapping_array[33614]))
+# print('word number 14343 with new highest importance: {}'.format(feature_mapping_array[14343]))
+# print('word number 14343 with new highest importance: {}'.format(feature_mapping_array[21323]))

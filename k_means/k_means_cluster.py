@@ -48,6 +48,7 @@ data_dict.pop("TOTAL", 0)
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+# feature_3 = "total_payments"
 poi  = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
@@ -59,12 +60,35 @@ poi, finance_features = targetFeatureSplit( data )
 ### for f1, f2, _ in finance_features:
 ### (as it's currently written, the line below assumes 2 features)
 for f1, f2 in finance_features:
-    plt.scatter( f1, f2 )
+    plt.scatter( f1, f2)
 plt.show()
 
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
+from sklearn.cluster import KMeans
+kmeans = KMeans(n_clusters=2)
+kmeans.fit(finance_features)
+pred = kmeans.predict(finance_features)
 
+# code to print list of sorted values of exercised_stock_options
+eso_list = []
+for name, record in data_dict.items():
+    eso_list.append(record['exercised_stock_options'])
+print('Sorted Exercised Stock Options List(ASC)')
+print(sorted(eso_list))
+salary_list = []
+for name, record in data_dict.items():
+    salary_list.append(record['salary'])
+print('Sorted Salary List(ASC)')
+print(sorted(salary_list))
+
+# mini project on feature scaling
+# min max scaler
+from sklearn.preprocessing import MinMaxScaler
+min_max_scaler = MinMaxScaler()
+finance_features = min_max_scaler.fit_transform(finance_features)
+finance_features_test = min_max_scaler.transform([[200000., 1000000.]])
+print('finance_features transformed with min_max_scaler: {}'.format(finance_features_test))
 
 
 
